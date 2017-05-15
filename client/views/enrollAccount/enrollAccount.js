@@ -1,4 +1,4 @@
-Template.entryResetPassword.helpers({
+Template.entryEnrollAccount.helpers({
   error: function() {
     return Session.get('entryError');
   },
@@ -7,8 +7,8 @@ Template.entryResetPassword.helpers({
   }
 });
 
-Template.entryResetPassword.events({
-  'submit #resetPassword': function(event) {
+Template.entryEnrollAccount.events({
+  'submit #setPassword': function(event) {
     var password, passwordErrors;
     event.preventDefault();
     Alerts.clear();
@@ -54,7 +54,6 @@ Template.entryResetPassword.events({
       } else {
         Session.set('resetToken', null);
         Router.go(AccountsEntry.settings.dashboardRoute);
-        Alerts.add(i18n('info.passwordReset'), 'success');
       }
     });
   }

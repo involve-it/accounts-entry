@@ -2,7 +2,6 @@ var exclusions;
 
 Router.route("entrySignIn", {
   path: "/sign-in",
-  layoutTemplate: 'basicLayout',
   name: 'entrySignIn',
   template: 'entrySignIn',
   onBeforeAction: function() {
@@ -35,7 +34,6 @@ Router.route("entrySignIn", {
 });
 Router.route("entrySignUp", {
   path: "/sign-up",
-  layoutTemplate: 'basicLayout',
   name: 'entrySignUp',
   template: 'entrySignUp',
   onBeforeAction: function() {
@@ -65,7 +63,6 @@ Router.route("entrySignUp", {
 });
 Router.route("entryForgotPassword", {
   path: "/forgot-password",
-  layoutTemplate: 'basicLayout',
   name: 'entryForgotPassword',
   template: 'entryForgotPassword',
   onBeforeAction: function() {
@@ -75,30 +72,31 @@ Router.route("entryForgotPassword", {
 });
 Router.route('entrySignOut', {
   path: '/sign-out',
-  layoutTemplate: 'basicLayout',
   name: 'entrySignOut',
   template: 'entrySignOut',
   onBeforeAction: function() {
     Alerts.clear();
     if (AccountsEntry.settings.homeRoute) {
-      var userId = Meteor.userId();
       Meteor.logout();
       Router.go(AccountsEntry.settings.homeRoute);
-      var deviceId;
-      if (Meteor.isCordova){
-        deviceId = device.uuid;
-      }
-      Meteor.call('logOut', userId, deviceId, function () {
-      });
     }
     this.next();
   }
 });
 Router.route('entryResetPassword', {
   path: 'reset-password/:resetToken',
-  layoutTemplate: 'basicLayout',
   name: 'entryResetPassword',
   template: 'entryResetPassword',
+  onBeforeAction: function() {
+    Alerts.clear();
+    Session.set('resetToken', this.params.resetToken);
+    this.next();
+  }
+});
+Router.route('entryEnrollAccount', {
+  path: 'enroll-account/:resetToken',
+  name: 'entryEnrollAccount',
+  template: 'entryEnrollAccount',
   onBeforeAction: function() {
     Alerts.clear();
     Session.set('resetToken', this.params.resetToken);
@@ -108,7 +106,6 @@ Router.route('entryResetPassword', {
 
 Router.route('entryEmailVerificationPending', {
   path: '/verification-pending',
-  layoutTemplate: 'basicLayout',
   name: 'entryEmailVerificationPending',
   template: 'entryEmailVerificationPending',
   onBeforeAction: function() {
@@ -124,11 +121,7 @@ _.each(Router.routes, function(route) {
 });
 
 Router.onStop(function() {
-  if (!_.contains(exclusions, (Router.current().route) !== null ? Router.current().url : undefined)) {
-    var url = Router.current().url;
-    var arr = url && url.split('/');
-    if (arr[arr.length - 1] !== 'sign-in') {
-      Session.set('fromWhere', Router.current().url);
-    }
+  if (!_.contains(exclusions, (Router.current().route) !== null ? Router.current().path : undefined)) {
+    Session.set('fromWhere', Router.current().path);
   }
 });

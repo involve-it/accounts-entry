@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Make signin and signout their own pages with routes (in javascript)",
-  version: '0.8.2',
-  name: "selaias-local:accounts-entry",
+  version: '0.9.0',
+  name: "selaias:accounts-entry",
   git: 'https://github.com/selaias/meteor-accounts-entry.git',
 });
 
@@ -9,8 +9,8 @@ Package.onUse(function(api) {
   api.versionsFrom("1.2.0.1");
 
   api.use('selaias:alerts@0.3.1', 'client');
-
-  api.use(['iron:router@1.0.3', 'anti:i18n', 'ecmascript'], ['client', 'server']);
+  
+  api.use(['iron:router@1.0.3', 'anti:i18n@0.4.3'], ['client', 'server']);
   // CLIENT
   api.use([
     'deps',
@@ -18,7 +18,7 @@ Package.onUse(function(api) {
     'accounts-base',
     'underscore',
     'templating',
-    //'handlebars',
+    'handlebars',
     'session',
     'check',
     'less',
@@ -40,6 +40,8 @@ Package.onUse(function(api) {
     'client/views/forgotPassword/forgotPassword.js',
     'client/views/resetPassword/resetPassword.html',
     'client/views/resetPassword/resetPassword.js',
+    'client/views/enrollAccount/enrollAccount.html',
+    'client/views/enrollAccount/enrollAccount.js',
     'client/views/verifyEmail/emailVerificationPending.html',
     'client/views/verifyEmail/emailVerificationPending.js',
     'client/views/social/social.html',
@@ -68,29 +70,29 @@ Package.onUse(function(api) {
   api.addFiles([
     'shared/router.js',
 
+    'shared/i18n/i18n_ar.js',
+    'shared/i18n/i18n_de.js',
+    'shared/i18n/i18n_el.js',
     'shared/i18n/i18n_en.js',
-    /*'shared/i18n/i18n_ar.js',
-     'shared/i18n/i18n_de.js',
-     'shared/i18n/i18n_el.js',
-     'shared/i18n/i18n_es.js',
-     'shared/i18n/i18n_fr.js',
-     'shared/i18n/i18n_it.js',
-     'shared/i18n/i18n_pl.js',
-     'shared/i18n/i18n_pt.js',
-     'shared/i18n/i18n_ru.js',
-     'shared/i18n/i18n_sl.js',
-     'shared/i18n/i18n_sv.js'*/
+    'shared/i18n/i18n_es.js',
+    'shared/i18n/i18n_fr.js',
+    'shared/i18n/i18n_it.js',
+    'shared/i18n/i18n_pl.js',
+    'shared/i18n/i18n_pt.js',
+    'shared/i18n/i18n_ru.js',
+    'shared/i18n/i18n_sl.js',
+    'shared/i18n/i18n_sv.js'
   ], ['client', 'server']);
 
 });
 
 Package.onTest(function (api) {
   api.use(['tinytest',
-    'underscore',
-    //'handlebars',
-    'test-helpers',
-    'templating',
-    'mongo-livedata']);
+           'underscore',
+           'handlebars',
+           'test-helpers',
+           'templating',
+           'mongo-livedata']);
   api.use(['iron:router', 'anti:i18n@0.4.3', 'selaias:alerts@0.2.1'], ['client', 'server']);
   api.use('selaias:accounts-entry');
 

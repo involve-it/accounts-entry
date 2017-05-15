@@ -139,8 +139,6 @@ AccountsEntry.entrySignUpEvents = {
           var isEmailSignUp, userCredential;
           if (err) {
             Alerts.add(err.reason, 'danger');
-            // bz.ui.error(Alerts);
-            bz.ui.error(err.reason);
             return;
           }
           isEmailSignUp = _.contains(['USERNAME_AND_EMAIL', 'EMAIL_ONLY'], AccountsEntry.settings.passwordSignupFields);
@@ -151,17 +149,12 @@ AccountsEntry.entrySignUpEvents = {
           else {
             Meteor.loginWithPassword(userCredential, password, function(error) {
               if (error) {
-                sAlert.error('<div class="bz-msg-text">' + error.reason + '</div>', {effect: 'scale', html: true});
                 Alerts.add(error.reason, 'danger');
+              } else if (Session.get('fromWhere')) {
+                Router.go(Session.get('fromWhere'));
+                Session.set('fromWhere', null);
               } else {
-                bz.help.location.startWatchingLocation();
-                bz.mobile.processLogin();
-                if (Session.get('fromWhere')) {
-                  Router.go(Session.get('fromWhere'));
-                  Session.set('fromWhere', null);
-                } else {
-                  Router.go(AccountsEntry.settings.dashboardRoute);
-                }
+                Router.go(AccountsEntry.settings.dashboardRoute);
               }
             });
           }
@@ -176,19 +169,3 @@ AccountsEntry.entrySignUpEvents = {
 Template.entrySignUp.helpers(AccountsEntry.entrySignUpHelpers);
 
 Template.entrySignUp.events(AccountsEntry.entrySignUpEvents);
-
-
-Template.entrySignUp.rendered = function() {
-  $(document).foundation({
-    abide: {
-      live_validate: true,
-      validate_on_blur: true,
-      focus_on_invalid: true,
-      error_labels: true,
-      timeout: 1000,
-      patterns: {
-        email: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-      }
-    }
-  });
-};

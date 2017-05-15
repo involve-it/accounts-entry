@@ -13,10 +13,8 @@ AccountsEntry = {
     entrySignUp: '/sign-up',
     emailVerificationPendingRoute: '/verification-pending',
     extraSignUpFields: [],
-    showOtherLoginServices: false,
-    fluidLayout: false,
+    showOtherLoginServices: true,
     requirePasswordConfirmation: true,
-    showSpinner: true,
     waitEmailVerification: true
   },
   isStringEmail: function(email) {

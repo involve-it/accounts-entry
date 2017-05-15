@@ -3,6 +3,10 @@ Meteor.startup(function() {
     return Meteor.absoluteUrl('reset-password/' + token);
   };
 
+  Accounts.urls.enrollAccount = function(token) {
+    return Meteor.absoluteUrl('enroll-account/' + token);
+  };
+
   AccountsEntry = {
     settings: {},
     config: function(appConfig) {
@@ -64,9 +68,6 @@ Meteor.methods({
       } else {
         userId = Accounts.createUser({email: user.email, password: user.password, profile: _.extend(profile, user.profile)});
       }
-      if (userId){
-        Meteor.users.update({_id: userId}, {$set: {enableNearbyNotifications: true}});
-      }
       if (user.email && Accounts._options.sendVerificationEmail) {
         Accounts.sendVerificationEmail(userId, user.email);
       }
@@ -76,11 +77,4 @@ Meteor.methods({
     }
 
   }
-});
-// надо перенести к нам!!:
-Meteor.startup(function () {
-  AccountsEntry.config({
-    //signupCode: 'сплин',         // only restricts username+password users, not OAuth
-    //showSignupCode: true,         // place it also on server for extra security
-  });
 });

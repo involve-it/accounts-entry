@@ -20,9 +20,7 @@ Template.entrySocial.helpers({
   },
   isSocial: function(){
     var s = this.toString();
-    /*CONSOLE CLEAR
     console.log(s)
-    */
     if(s=='strava' || s=='runkeeper' || s=='underArmour'){
       return false
     }else{
